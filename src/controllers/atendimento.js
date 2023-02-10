@@ -1,10 +1,22 @@
 const { Atendimento, Paciente, Psicologo } = require("../models")
 
 module.exports = {
+    dashAtendimentos: async (req, res) => {
+        const atendimentos = await Atendimento.findAll()
+
+        if (atendimentos.length >= 1){
+            return res.json(atendimentos.length)
+        }
+        
+        res.json({ message: "Não há atendimentos à serem exibidos." })
+    },
     getALL: async (req, res) => {
         const atendimentos = await Atendimento.findAll( { include: [Psicologo, Paciente] } )
     
-        res.json(atendimentos)
+        if (atendimentos.length >= 1){
+            return res.json(atendimentos)
+        }
+            res.json({ message: "Não há nenhum atendimento existente no sistema." })
     },
 
     getById: async (req, res) => {
@@ -17,7 +29,7 @@ module.exports = {
         }
     
         res.statusCode = 404;
-        res.json({ message: "Sessão de tendimento não encontrada." })
+        res.json({ message: "Sessão de atendimento não encontrada." })
     },
 
     store: async (req, res) => {
@@ -37,17 +49,12 @@ module.exports = {
                 paciente_id,            
             });
 
-            // const generosData = await Genero.findAll({
-            //     where: { id: { [Op.in]: generos } }
-            // });
-
-            // await novoFilme.setGeneros(generosData) // vínculo com a tabela generos feito automaticamente pelo sequelize
 
             res.json(novoAtendimento);
 
         } catch (error) {
             console.log(error.message);
-            res.status(500).json({ error: "Houve um erro ao cadastrar suas informações, tente novamente :((" })
+            res.status(500).json({ error: "Houve um erro ao cadastrar seu atendimento :(  verifique os dados e tente novamente!" })
         }
 
     },
@@ -68,9 +75,10 @@ module.exports = {
         if (!atendimento){
             res.statusCode = 404;
             res.json({ message: "não é possível atualizar um atendimento que não existe :(" })
+            return;
         }
         
-        await filme.update({
+        await atendimento.update({
             data_atendimento,
             observacao,
             psicologo_id,
@@ -78,14 +86,6 @@ module.exports = {
         })
 
 
-        // if (Array.isArray(genero)) {
-
-        //     const generosData = await Genero.findAll({
-        //         where: { id: { [Op.in]: generos } }
-        //     });
-
-        //     await filme.setGeneros(generosData)
-        // }
 
         const atendimentoAtualizado = await Atendimento.findByPk(id)
 
@@ -102,8 +102,7 @@ module.exports = {
             return;
         }
         
-        // await filme.setGeneros([]); // deletar primeiro os generos (vinculos)
-        await psicologo.destroy();
+        await atendimento.destroy();
 
         res.sendStatus(204);
 

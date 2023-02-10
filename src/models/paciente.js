@@ -9,7 +9,12 @@ const Paciente = database.define('Paciente', {
     idade: {
         type: DataTypes.DATE(),
         allowNull: false
-},
+    },
+    email: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    unique: true,
+    },
 },
 {
     tableName: "pacientes",

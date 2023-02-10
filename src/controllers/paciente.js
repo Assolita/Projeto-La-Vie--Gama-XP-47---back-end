@@ -1,10 +1,24 @@
 const { Paciente, Atendimento } = require("../models")
 
 module.exports = {
+    dashPacientes: async (req, res) => {
+        const pacientes = await Paciente.findAll()
+
+        if (pacientes.length >= 1){
+            return res.json(pacientes.length)
+        }
+        
+        res.json({ message: "Não há pacientes à serem exibidos." })
+    },
+
     getALL: async (req, res) => {
         const pacientes = await Paciente.findAll( {include: Atendimento } )
     
-        res.json(pacientes)
+        if (pacientes.length >= 1){
+            return res.json(pacientes)
+        }
+        
+        res.json({ message: "Não há pacientes à serem exibidos." })
     },
 
     getById: async (req, res) => {
@@ -15,8 +29,7 @@ module.exports = {
             return res.json(paciente)
 
         }
-    
-        // res.sendStatus(404);  
+      
         res.statusCode = 404;
         res.json({ message: "Paciente não encontrado ou não existe." })
     },
@@ -26,20 +39,16 @@ module.exports = {
             const { body: {
                 nome,
                 idade,
+                email,
                 }
             } = req;
 
             const novoPaciente = await Paciente.create({
                 nome,
                 idade,
+                email,
                            
             });
-
-            // const generosData = await Genero.findAll({
-            //     where: { id: { [Op.in]: generos } }
-            // });
-
-            // await novoFilme.setGeneros(generosData) // vínculo com a tabela generos feito automaticamente pelo sequelize
 
             res.json(novoPaciente);
 
@@ -56,6 +65,7 @@ module.exports = {
             body: {
                 nome,
                 idade,
+                email,
             }
         } = req;
 
@@ -66,17 +76,8 @@ module.exports = {
             res.json({ message: "não é possível atualizar um cadastro que não existe :(" })
         }
         
-        await paciente.update({ nome, idade })
+        await paciente.update({ nome, idade, email })
 
-
-        // if (Array.isArray(genero)) {
-
-        //     const generosData = await Genero.findAll({
-        //         where: { id: { [Op.in]: generos } }
-        //     });
-
-        //     await filme.setGeneros(generosData)
-        // }
 
         const pacienteAtualizado = await Paciente.findByPk(id)
 
@@ -93,7 +94,6 @@ module.exports = {
             return;
         }
         
-        // await filme.setGeneros([]); // deletar primeiro os generos (vinculos)
         await paciente.destroy();
 
         res.sendStatus(204);

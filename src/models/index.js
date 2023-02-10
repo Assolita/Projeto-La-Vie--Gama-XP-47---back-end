@@ -30,9 +30,6 @@ Atendimento.belongsTo(Psicologo, {
 
 
 
-
-
-
 module.exports = {
     Psicologo,
     Paciente,

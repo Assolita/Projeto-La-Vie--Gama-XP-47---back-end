@@ -1,4 +1,3 @@
 module.exports = {
-    key:"HandsOn"
+    key: "lavieclinicaxp47",
 }
-

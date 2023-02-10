@@ -12,12 +12,13 @@ const Psicologo = database.define('Psicologo', {
     
     },
     apresentacao: {
-        type: DataTypes.TEXT(),
-        allowNull: false
+        type: DataTypes.STRING(),
+        allowNull: true
     },
     email: {
         type: DataTypes.STRING(255),
-        allowNull: false
+        allowNull: false,
+        unique: true,
     }
 },
 {

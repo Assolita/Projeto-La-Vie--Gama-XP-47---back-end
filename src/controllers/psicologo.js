@@ -1,10 +1,34 @@
 const { Psicologo, Atendimento } = require("../models")
 
 module.exports = {
+    dashPsicologos: async (req, res) => {
+        const psicologos = await Psicologo.findAll()
+
+        if (psicologos.length >= 1){
+            return res.json(psicologos.length)
+        }
+        
+        res.json({ message: "Não há psicólogos à serem exibidos." })
+    },
+    mediaAtendimento: async (req, res) => {
+        const atendimentos = await Atendimento.findAll()
+        const psicologos = await Psicologo.findAll()
+
+        if (psicologos.length >= 1 && atendimentos.length >=1){
+            let psi = psicologos.length;
+            let att = atendimentos.length;
+            let media = att / psi
+            return res.json({message: `A média de atendimento por psicólogo é ${media}`})
+        }
+
+    },
     getALL: async (req, res) => {
         const psicologos = await Psicologo.findAll( {include: Atendimento } )
     
-        res.json(psicologos)
+        if (psicologos.length >= 1){
+            return res.json(psicologos)
+        }
+            res.json({ message: "Não há psicólogos cadastrados no momento." })
     },
 
     getById: async (req, res) => {
@@ -38,11 +62,6 @@ module.exports = {
                 email              
             });
 
-            // const generosData = await Genero.findAll({
-            //     where: { id: { [Op.in]: generos } }
-            // });
-
-            // await novoFilme.setGeneros(generosData) // vínculo com a tabela generos feito automaticamente pelo sequelize
 
             res.json(novoPsicologo);
 
@@ -71,17 +90,8 @@ module.exports = {
             res.json({ message: "não é possível atualizar um cadastro que não existe :(" })
         }
         
-        await filme.update({ nome, senha, apresentacao, email }) //atualiza o filme no BD
+        await psicologo.update({ nome, senha, apresentacao, email }) //atualiza o filme no BD
 
-
-        // if (Array.isArray(genero)) {
-
-        //     const generosData = await Genero.findAll({
-        //         where: { id: { [Op.in]: generos } }
-        //     });
-
-        //     await filme.setGeneros(generosData)
-        // }
 
         const psicologoAtualizado = await Psicologo.findByPk(id)
 

@@ -6,6 +6,4 @@ const router = express.Router(); // criação do server de rotas
 
 router.get("/", welcome)
 
-
-
 module.exports = router;

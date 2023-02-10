@@ -16,10 +16,9 @@ const Atendimento = database.define("atendimento",
             allowNull: false
         },
         observacao: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.TEXT(),
             allowNull: false
         },
-
 
     },
     {
