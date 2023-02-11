@@ -14,3 +14,12 @@ As funcionalidades criadas para a API foram:
   -Endpoint de um dashboard, que exibe informações adicionais.
   
   Para a validação da funcionalidade delas, utilizamos o programa "insomnia", e por ele criamos a documentação que está no index.html da pasta "docs" do repositório.
+
+
+Contributors:
+@Assolita
+@marceloamjr
+@Ildelvy
+
+Github pages link:
+https://assolita.github.io/Projeto-La-Vie--Gama-XP-47---back-end/
